@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="E-Commerce Website" default="war" basedir=".">
+  
+    <!-- Define properties for directories and files -->
+    <property name="build.dir" value="build"/>
+    <property name="src.dir" value="src/main/java"/>
+    <property name="webapp.dir" value="webapp"/>
+    <property name="lib.dir" value="webapp/WEB-INF/lib"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="war.file" value="${build.dir}/e-commerce-website.war"/>
+
+    <!-- Create the build directory -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+    </target>
+
+    <!-- Task: Compile Java source files -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+            <classpath>
+                <!-- Add external JARs needed for compilation (if any) -->
+                <pathelement path="webapp/WEB-INF/lib/mysql-connector-j-8.0.31.jar"/>
+                <pathelement path="webapp/WEB-INF/lib/angus-activation-2.0.1.jar"/>
+                <pathelement path="webapp/WEB-INF/lib/jakarta.activation-api-2.1.2.jar"/>
+                <pathelement path="webapp/WEB-INF/lib/jakarta.mail-2.0.1.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Task: Package the application into a WAR file -->
+    <target name="war" depends="compile">
+        <war destfile="${war.file}" webxml="${webapp.dir}/WEB-INF/web.xml">
+            <!-- Include the classes -->
+            <fileset dir="${classes.dir}"/>
+            <!-- Include the webapp directory content -->
+            <fileset dir="${webapp.dir}">
+                <exclude name="WEB-INF/lib/**"/>
+            </fileset>
+            <!-- Include the libraries -->
+            <fileset dir="webapp/WEB-INF/lib"/>
+        </war>
+    </target>
+
+    <!-- Clean the build directory -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- Deploy the WAR file (optional) -->
+    <target name="deploy" depends="war">
+        <!-- Replace this with your deployment logic (e.g., copying to server, or Tomcat deployment) -->
+        <echo message="WAR file created: ${war.file}"/>
+    </target>
+
+</project>
