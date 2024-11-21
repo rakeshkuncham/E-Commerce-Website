@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="E-Commerce Website" default="war" basedir=".">
-  
+
     <!-- Define properties for directories and files -->
     <property name="build.dir" value="build"/>
     <property name="src.dir" value="src/main/java"/>
@@ -20,11 +20,11 @@
     <target name="compile" depends="init">
         <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
             <classpath>
-                <!-- Add external JARs needed for compilation (if any) -->
-                <pathelement path="webapp/WEB-INF/lib/mysql-connector-j-8.0.31.jar"/>
-                <pathelement path="webapp/WEB-INF/lib/angus-activation-2.0.1.jar"/>
-                <pathelement path="webapp/WEB-INF/lib/jakarta.activation-api-2.1.2.jar"/>
-                <pathelement path="webapp/WEB-INF/lib/jakarta.mail-2.0.1.jar"/>
+                <!-- Add external JARs needed for compilation -->
+                <pathelement path="${lib.dir}/mysql-connector-j-8.0.31.jar"/>
+                <pathelement path="${lib.dir}/angus-activation-2.0.1.jar"/>
+                <pathelement path="${lib.dir}/jakarta.activation-api-2.1.2.jar"/>
+                <pathelement path="${lib.dir}/jakarta.mail-2.0.1.jar"/>
             </classpath>
         </javac>
     </target>
@@ -39,7 +39,7 @@
                 <exclude name="WEB-INF/lib/**"/>
             </fileset>
             <!-- Include the libraries -->
-            <fileset dir="webapp/WEB-INF/lib"/>
+            <fileset dir="${lib.dir}"/>
         </war>
     </target>
 
@@ -52,6 +52,8 @@
     <target name="deploy" depends="war">
         <!-- Replace this with your deployment logic (e.g., copying to server, or Tomcat deployment) -->
         <echo message="WAR file created: ${war.file}"/>
+        <!-- Example: Deploy to Tomcat's webapps folder -->
+        <copy file="${war.file}" todir="/path/to/tomcat/webapps"/>
     </target>
 
 </project>
