@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="E-Commerce Website" default="war" basedir=".">
-
+  
     <!-- Define properties for directories and files -->
     <property name="build.dir" value="build"/>
     <property name="src.dir" value="src/main/java"/>
-    <property name="webapp.dir" value="webapp"/>
-    <property name="lib.dir" value="webapp/WEB-INF/lib"/>
+    <property name="webapp.dir" value="src/main/webapp"/>
+    <property name="lib.dir" value="${webapp.dir}/WEB-INF/lib"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="war.file" value="${build.dir}/e-commerce-website.war"/>
+    <property name="webxml" value="${webapp.dir}/WEB-INF/web.xml"/>
 
     <!-- Create the build directory -->
     <target name="init">
@@ -31,14 +32,14 @@
 
     <!-- Task: Package the application into a WAR file -->
     <target name="war" depends="compile">
-        <war destfile="${war.file}" webxml="${webapp.dir}/WEB-INF/web.xml">
-            <!-- Include the classes -->
+        <war destfile="${war.file}" webxml="${webxml}">
+            <!-- Include the compiled classes -->
             <fileset dir="${classes.dir}"/>
-            <!-- Include the webapp directory content -->
+            <!-- Include the webapp directory content excluding the lib folder -->
             <fileset dir="${webapp.dir}">
                 <exclude name="WEB-INF/lib/**"/>
             </fileset>
-            <!-- Include the libraries -->
+            <!-- Include the libraries from WEB-INF/lib -->
             <fileset dir="${lib.dir}"/>
         </war>
     </target>
@@ -52,8 +53,6 @@
     <target name="deploy" depends="war">
         <!-- Replace this with your deployment logic (e.g., copying to server, or Tomcat deployment) -->
         <echo message="WAR file created: ${war.file}"/>
-        <!-- Example: Deploy to Tomcat's webapps folder -->
-        <copy file="${war.file}" todir="/path/to/tomcat/webapps"/>
     </target>
 
 </project>
